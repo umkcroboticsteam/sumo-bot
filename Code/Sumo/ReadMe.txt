@@ -1,1 +1,1 @@
-This is the current code for the sumo bot
+This is the current code for the sumo bot.
