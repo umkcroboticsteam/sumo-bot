@@ -10,9 +10,8 @@ Move move;
 Sight sight;
 Surface surface;
 //FIXME:: should add inilizaing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
-int turn = 0;
-bool escapeRight = LOW;
-bool escapeLeft = LOW;
+bool escapeRight = LOW; // move to checkEscape()?
+bool escapeLeft = LOW; // do these ever reset to LOW?
 int flPin = 50;          
 int blPin = 52;
 int frPin = 51; 
@@ -154,16 +153,16 @@ void loop()
 
 //printPins();
     // search
-    if(escapeLeft != HIGH && escapeRight != HIGH) 
+    if(escapeLeft != HIGH && escapeRight != HIGH) // why does this need to be here?
     {
       checkEscape();
-      move.forward(); 
+      move.forward(); //same as line 198?
     }
 
 }
 void checkEscape(){
   
-digitalWrite(blPin, HIGH);
+digitalWrite(blPin, HIGH); // move these to escape()?
 digitalWrite(brPin, HIGH);
 digitalWrite(frPin, HIGH);
 digitalWrite(flPin, HIGH);
@@ -172,30 +171,24 @@ digitalWrite(flPin, HIGH);
 if(digitalRead(frPin) == 0 ) 
 {
     escapeLeft = HIGH;
-    // turn iterator initialized to random value between 1 and 5
-    turn = random(2,4); 
     move.backward();
     delay(200); 
 }
 else if(digitalRead(flPin) == 0)
 {
     escapeRight = HIGH;
-    // turn iterator initialized to random value between 1 and 5
-    turn = random(2,4);
     move.backward();
     delay(200); 
 }
 else if(digitalRead(brPin) == 0)
 {
   escapeLeft = HIGH;
-  turn = random(2,4);
   move.forward();
   delay(200); 
 }
 else if(digitalRead(blPin) == 0)
 {
   escapeRight = HIGH;
-  turn = random(2,4);
   move.forward();
   delay(200); 
 }
@@ -203,63 +196,19 @@ if(escapeRight == HIGH || escapeLeft == HIGH){
   escape();
 }
 else{
-      // search
-    if(escapeLeft != HIGH && escapeRight != HIGH) 
-    {
-      move.forward(); 
-    }
+  move.forward(); 
 }
 }
 
-void escape(){
+void escape(){ // add parameters for escapeRight and escapeLeft, then localize global variables
+  // number of seconds to turn
+  int turn = random(2,4);
   move.power(204);
   if(escapeRight == HIGH){
-    doEscapeRight();
+    move.right();
   }
   else if(escapeLeft == HIGH){
-    doEscapeLeft();
+    move.left();
   }
-}
-
-void doEscapeRight(){
-
-//     escape right loop
-while(escapeRight == HIGH) 
-{
-    if(turn > 0) 
-    {
-    // decrement turn iterator and move right 1 second per decrement
-      turn -= 1;
-      move.right();
-      delay(350);
-    }
-    
-    else
-    {
-    // break the loop once the turn iterator is 0
-      turn = 0;
-      escapeRight = LOW;
-    }
-}
-}
-void doEscapeLeft(){
-//     escape left loop
-while(escapeLeft == HIGH) 
-{
-      if(turn > 0) 
-      {
-        // decrement turn iterator and move right 1 second per decrement
-        turn -= 1;
-        move.left();
-        delay(350);
-      }
-
-      else
-      {
-        // break the loop once the turn iterator is 0
-        turn = 0;
-        escapeLeft = LOW;
-      }
-}
-
+  delay(turn * 350); // 350 = 1 sec?
 }
