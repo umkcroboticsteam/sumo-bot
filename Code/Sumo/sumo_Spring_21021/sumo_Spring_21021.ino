@@ -98,12 +98,13 @@ void loop()
     //RGB_color(255,0,0); // red
   }
   // sensor num 6, 90 degree right sensor. Sensor looks for obstacles 90 deg. on right side
-  if(sensors[5].ping_cm() < threshold_max && sensors[5].ping_cm() > 0) {
+  else if(sensors[5].ping_cm() < threshold_max && sensors[5].ping_cm() > 0) {
     checkEscape();
     move.right();
     delay(delay_time);
     //RGB_color(0,0,255); // blue
   }
+  
   // sensor num 2, 45 degree left sensor. Sensor looks for obstacles 30 deg. on left side
   if(sensors[1].ping_cm() <= threshold_max && sensors[1].ping_cm() > 0){
     checkEscape();
@@ -112,7 +113,7 @@ void loop()
     //RGB_color(255,255,0); //yellow
   }
   // sensor num 5, 45 degree right sensor. Sensor looks for obstacles 30 deg. on right side
-  if(sensors[4].ping_cm() <= threshold_max && sensors[4].ping_cm() > 0){
+  else if(sensors[4].ping_cm() <= threshold_max && sensors[4].ping_cm() > 0){
     checkEscape();
     move.right();
     delay(delay_time);
@@ -138,25 +139,24 @@ void loop()
     delay(delay_time);
     //RGB_color(255,0,255); //purple
   }
+  
   // if back sensor sees it, turn around
   if(sensors[6].ping_cm() <= threshold_back && sensors[6].ping_cm() > 0){
     checkEscape();
     //move.turn(180, 'R');
     //RGB_color(0,0,0); //off
   }
-checkEscape();
-
-
-/**
- * Escape Sequence
- */
-
-//printPins();
-// search
-if(escapeLeft != HIGH && escapeRight != HIGH){ // why does this need to be here?
   checkEscape();
-  move.forward(); //same as line 198?
-}
+
+  /**
+   * Escape Sequence
+   */
+  //printPins();
+  // search
+  if(escapeLeft != HIGH && escapeRight != HIGH){ // why does this need to be here?
+    checkEscape();
+    move.forward(); //same as line 198?
+  }
 }
 
 void checkEscape()
