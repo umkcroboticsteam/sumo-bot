@@ -9,7 +9,7 @@
 Move move;
 Sight sight;
 Surface surface;
-//FIXME:: should add inilizaing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
+//FIXME:: should add initializing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
 bool escapeRight = LOW; // move to checkEscape()?
 bool escapeLeft = LOW; // do these ever reset to LOW?
 int flPin = 50;          
@@ -17,12 +17,12 @@ int blPin = 52;
 int frPin = 51; 
 int brPin = 53;
 
-int red_light_pin= 27;
+int red_light_pin = 27;
 int green_light_pin = 26;
 int blue_light_pin = 28;
 
 void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
- {
+{
   analogWrite(red_light_pin, red_light_value);
   analogWrite(green_light_pin, green_light_value);
   analogWrite(blue_light_pin, blue_light_value);
@@ -52,7 +52,7 @@ NewPing sensors[7] = {
   NewPing( 5, 5, 200), //sensor 4 right 0 degree
   NewPing( 6, 6, 200), //sensor 5 right 45 degree
   NewPing( 7, 7, 200), //sensor 6 right 90 degree
-  NewPing( 9, 8, 200),//sensor 7 back 180 degree
+  NewPing( 9, 8, 200)  //sensor 7 back 180 degree
 };
 
 int delay_time = 100;
@@ -78,41 +78,40 @@ void setup()
   pinMode(blue_light_pin, OUTPUT);
 
 
-  //sets the robot to drive foward and go 60% power
+  // sets the robot to drive foward and go 60% power
   move.power(255); // 153 for 60%, 204 for 80%
   delay(5000);
   move.forward();
 }
   
-//FIXME:: should make the Sonic sensor, Ir sensor, and drive sequace there own functions to help keep code clean and organize.
+//FIXME:: should make the Sonic sensor, Ir sensor, and drive sequace their own functions to help keep code clean and organize.
 void loop() 
 {
-
-/**
- * Sonic sensor sequence
- */
- // sensor num 1, 90 degree left sensor. Sensor looks for obstacles 90 deg. on left side 
- if(sensors[0].ping_cm() < threshold_max && sensors[0].ping_cm() > 0){
-  checkEscape();
-  move.left();
-  delay(delay_time);
-  //RGB_color(255,0,0); // red
- }
- // sensor num 6, 90 degree right sensor. Sensor looks for obstavles 90 deg. on right side
- if(sensors[5].ping_cm() < threshold_max && sensors[5].ping_cm() > 0) {
-  checkEscape();
-  move.right();
-  delay(delay_time);
-  //RGB_color(0,0,255); // blue
+  /**
+   * Sonic sensor sequence
+   */
+  // sensor num 1, 90 degree left sensor. Sensor looks for obstacles 90 deg. on left side 
+  if(sensors[0].ping_cm() < threshold_max && sensors[0].ping_cm() > 0){
+    checkEscape();
+    move.left();
+    delay(delay_time);
+    //RGB_color(255,0,0); // red
   }
-  // sensor num 2, 45 degree left sensor. Sensor looks for obstacle 30 deg. on left side
+  // sensor num 6, 90 degree right sensor. Sensor looks for obstacles 90 deg. on right side
+  if(sensors[5].ping_cm() < threshold_max && sensors[5].ping_cm() > 0) {
+    checkEscape();
+    move.right();
+    delay(delay_time);
+    //RGB_color(0,0,255); // blue
+  }
+  // sensor num 2, 45 degree left sensor. Sensor looks for obstacles 30 deg. on left side
   if(sensors[1].ping_cm() <= threshold_max && sensors[1].ping_cm() > 0){
     checkEscape();
     move.left();
     delay(delay_time);
     //RGB_color(255,255,0); //yellow
   }
-  // sensor num 5, 45 degree right sensor. Sensor looks for obstavle 30 deg. on right side
+  // sensor num 5, 45 degree right sensor. Sensor looks for obstacles 30 deg. on right side
   if(sensors[4].ping_cm() <= threshold_max && sensors[4].ping_cm() > 0){
     checkEscape();
     move.right();
@@ -120,8 +119,8 @@ void loop()
     //RGB_color(0,255,255); // cyan
   }
 
-//if sensor 2 and 3 both see it, full power
-  if((sensors[2].ping_cm() <= threshold_max) && (sensors[2].ping_cm() > 0) && (sensors[3].ping_cm() <= threshold_max) && (sensors[3].ping_cm() > 0)){
+  // if sensor 2 and 3 both see it, full power
+  if(sensors[2].ping_cm() <= threshold_max && sensors[2].ping_cm() > 0 && sensors[3].ping_cm() <= threshold_max && sensors[3].ping_cm() > 0){
     checkEscape();
     move.forward(); 
     delay(delay_time);
@@ -139,12 +138,13 @@ void loop()
     delay(delay_time);
     //RGB_color(255,0,255); //purple
   }
-  if((sensors[6].ping_cm() <= threshold_back) && (sensors[6].ping_cm() > 0)){
+  // if back sensor sees it, turn around
+  if(sensors[6].ping_cm() <= threshold_back && sensors[6].ping_cm() > 0){
     checkEscape();
     //move.turn(180, 'R');
-   //RGB_color(0,0,0); //off
+    //RGB_color(0,0,0); //off
   }
-  checkEscape();
+checkEscape();
 
 
 /**
@@ -152,55 +152,53 @@ void loop()
  */
 
 //printPins();
-    // search
-    if(escapeLeft != HIGH && escapeRight != HIGH) // why does this need to be here?
-    {
-      checkEscape();
-      move.forward(); //same as line 198?
-    }
-
+// search
+if(escapeLeft != HIGH && escapeRight != HIGH){ // why does this need to be here?
+  checkEscape();
+  move.forward(); //same as line 198?
 }
-void checkEscape(){
-  
-digitalWrite(blPin, HIGH); // move these to escape()?
-digitalWrite(brPin, HIGH);
-digitalWrite(frPin, HIGH);
-digitalWrite(flPin, HIGH);
+}
 
-  // if either of the front sensors see the line, robot must escape
-if(digitalRead(frPin) == 0 ) 
+void checkEscape()
 {
+  digitalWrite(blPin, HIGH); // move these to escape()?
+  digitalWrite(brPin, HIGH);
+  digitalWrite(frPin, HIGH);
+  digitalWrite(flPin, HIGH);
+  
+  // if either of the front sensors see the line, robot must escape backwards
+  if(digitalRead(frPin) == 0){
     escapeLeft = HIGH;
     move.backward();
     delay(200); 
-}
-else if(digitalRead(flPin) == 0)
-{
+  }
+  else if(digitalRead(flPin) == 0){
     escapeRight = HIGH;
     move.backward();
     delay(200); 
-}
-else if(digitalRead(brPin) == 0)
-{
-  escapeLeft = HIGH;
-  move.forward();
-  delay(200); 
-}
-else if(digitalRead(blPin) == 0)
-{
-  escapeRight = HIGH;
-  move.forward();
-  delay(200); 
-}
-if(escapeRight == HIGH || escapeLeft == HIGH){
-  escape();
-}
-else{
-  move.forward(); 
-}
+  }
+  // if either of the back sensors see the line, robot must escape forwards
+  else if(digitalRead(brPin) == 0){
+    escapeLeft = HIGH;
+    move.forward();
+    delay(200); 
+  }
+  else if(digitalRead(blPin) == 0){
+    escapeRight = HIGH;
+    move.forward();
+    delay(200); 
+  }
+  // perform escape sequence if line is detected
+  if(escapeRight == HIGH || escapeLeft == HIGH){
+    escape();
+  }
+  else{
+    move.forward(); 
+  }
 }
 
-void escape(){ // add parameters for escapeRight and escapeLeft, then localize global variables
+void escape() // add parameters for escapeRight and escapeLeft, then localize global variables
+{ 
   // number of seconds to turn
   int turn = random(2,4);
   move.power(204);
