@@ -10,8 +10,6 @@ Move move;
 Sight sight;
 Surface surface;
 //FIXME:: should add initializing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
-bool escapeRight = LOW; // move to checkEscape()?
-bool escapeLeft = LOW;
 int flPin = 50;          
 int blPin = 52;
 int frPin = 51; 
@@ -155,6 +153,9 @@ void checkEscape()
   digitalWrite(brPin, HIGH);
   digitalWrite(frPin, HIGH);
   digitalWrite(flPin, HIGH);
+
+  bool escapeRight = LOW;
+  bool escapeLeft = LOW;
   
   // if either of the front sensors see the line, robot must escape backwards
   if(digitalRead(frPin) == 0){
@@ -180,16 +181,14 @@ void checkEscape()
   }
   // perform escape sequence if line is detected
   if(escapeRight == HIGH || escapeLeft == HIGH){
-    escape();
-    escapeRight = LOW;
-    escapeLeft = LOW;
+    escape(escapeRight, escapeLeft);
   }
   else{
     move.forward(); 
   }
 }
 
-void escape() // add parameters for escapeRight and escapeLeft, then localize global variables
+void escape(bool escapeRight, bool escapeLeft)
 { 
   // number of seconds to turn
   int turn = random(2,4);
