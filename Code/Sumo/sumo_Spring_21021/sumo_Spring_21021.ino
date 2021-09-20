@@ -11,7 +11,7 @@ Sight sight;
 Surface surface;
 //FIXME:: should add initializing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
 bool escapeRight = LOW; // move to checkEscape()?
-bool escapeLeft = LOW; // do these ever reset to LOW?
+bool escapeLeft = LOW;
 int flPin = 50;          
 int blPin = 52;
 int frPin = 51; 
@@ -191,6 +191,8 @@ void checkEscape()
   // perform escape sequence if line is detected
   if(escapeRight == HIGH || escapeLeft == HIGH){
     escape();
+    escapeRight = LOW;
+    escapeLeft = LOW;
   }
   else{
     move.forward(); 
