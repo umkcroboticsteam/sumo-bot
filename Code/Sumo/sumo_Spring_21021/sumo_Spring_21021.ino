@@ -147,16 +147,6 @@ void loop()
     //RGB_color(0,0,0); //off
   }
   checkEscape();
-
-  /**
-   * Escape Sequence
-   */
-  //printPins();
-  // search
-  if(escapeLeft != HIGH && escapeRight != HIGH){ // why does this need to be here?
-    checkEscape();
-    move.forward(); //same as line 198?
-  }
 }
 
 void checkEscape()
