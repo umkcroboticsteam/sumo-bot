@@ -6,14 +6,15 @@
 /**
  * Globals
  */
-Move move;
-Sight sight;
-Surface surface;
 //FIXME:: should add initializing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
 int flPin = 50;          
+int frPin = 51;
 int blPin = 52;
-int frPin = 51; 
 int brPin = 53;
+
+Move move(11, 10, 12, 13); // pwm1, pwm2, dir1, dir2
+Sight sight;
+Surface surface(flPin, frPin, blPin, brPin);
 
 int red_light_pin = 27;
 int green_light_pin = 26;
@@ -30,7 +31,7 @@ void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
 void printPins()
 {
   Serial.print("Back left pin reading: ");
-  Serial.println(digitalRead(blPin));
+  Serial.println(digitalRead(blPin)); // these can be changed to use surface object?
  
   Serial.print("Back right pin reading: ");
   Serial.println(digitalRead(brPin));
