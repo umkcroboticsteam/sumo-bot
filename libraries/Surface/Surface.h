@@ -6,7 +6,7 @@
 class Surface
 {
 	public:
-		Surface();
+		Surface(int, int, int, int);
 		bool front_left();
 		bool front_right();
 		bool back_left();
