@@ -6,7 +6,7 @@
 class Move
 {
 	public:
-		Move();
+		Move(int, int, int, int);
 		Move* power(int setPower);
 		void set(int right, int left, bool dirR, bool dirL);
 		void forward();

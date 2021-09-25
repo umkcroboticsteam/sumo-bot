@@ -1,13 +1,12 @@
 #include "Arduino.h"
 #include "Surface.h"
 
-Surface::Surface()
+Surface::Surface(int flPin, int frPin, int blPin, int brPin)
 {
-	int flPin = 24;
-	int blPin = 52;
-	int frPin = 25;
-	int brPin = 53;
-
+	this->flPin = flPin;
+	this->frPin = frPin;
+	this->blPin = blPin;
+	this->brPin = brPin;
 }
 
 // Read IR value
@@ -23,7 +22,7 @@ bool Surface::front_right()
 
 bool Surface::back_left()
 {
-	pinMode(blPin, INPUT);
+	pinMode(blPin, INPUT); // does this need to be here?
 	return digitalRead(blPin);
 }
 
