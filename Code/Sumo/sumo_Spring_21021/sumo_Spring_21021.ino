@@ -16,17 +16,6 @@ Move move(11, 10, 12, 13); // pwm1, pwm2, dir1, dir2
 Sight sight;
 Surface surface(flPin, frPin, blPin, brPin);
 
-int red_light_pin = 27;
-int green_light_pin = 26;
-int blue_light_pin = 28;
-
-void RGB_color(int red_light_value, int green_light_value, int blue_light_value)
-{
-  analogWrite(red_light_pin, red_light_value);
-  analogWrite(green_light_pin, green_light_value);
-  analogWrite(blue_light_pin, blue_light_value);
-}
-
 // This prints out what each IR sensor is reading
 void printPins()
 {
@@ -72,11 +61,6 @@ void setup()
 
   Serial.begin(115200);
 
-  pinMode(red_light_pin, OUTPUT);
-  pinMode(green_light_pin, OUTPUT);
-  pinMode(blue_light_pin, OUTPUT);
-
-
   // sets the robot to drive foward and go 60% power
   move.power(255); // 153 for 60%, 204 for 80%
   delay(5000);
@@ -94,14 +78,12 @@ void loop()
     checkEscape();
     move.left();
     delay(delay_time);
-    //RGB_color(255,0,0); // red
   }
   // sensor num 6, 90 degree right sensor. Sensor looks for obstacles 90 deg. on right side
   else if(sensors[5].ping_cm() < threshold_max && sensors[5].ping_cm() > 0) {
     checkEscape();
     move.right();
     delay(delay_time);
-    //RGB_color(0,0,255); // blue
   }
   
   // sensor num 2, 45 degree left sensor. Sensor looks for obstacles 30 deg. on left side
@@ -109,14 +91,12 @@ void loop()
     checkEscape();
     move.left();
     delay(delay_time);
-    //RGB_color(255,255,0); //yellow
   }
   // sensor num 5, 45 degree right sensor. Sensor looks for obstacles 30 deg. on right side
   else if(sensors[4].ping_cm() <= threshold_max && sensors[4].ping_cm() > 0){
     checkEscape();
     move.right();
     delay(delay_time);
-    //RGB_color(0,255,255); // cyan
   }
 
   // if sensor 2 and 3 both see it, full power
@@ -124,26 +104,22 @@ void loop()
     checkEscape();
     move.forward(); 
     delay(delay_time);
-    //RGB_color(255,255,255); //white
   }
   else if(sensors[2].ping_cm() <= threshold_max && sensors[2].ping_cm() > 0){
     checkEscape();
     move.left();
     delay(delay_time);
-    //RGB_color(0,255,0); //green
   }
   else if(sensors[3].ping_cm() <= threshold_max && sensors[3].ping_cm() > 0){
     checkEscape();
     move.right();
     delay(delay_time);
-    //RGB_color(255,0,255); //purple
   }
   
   // if back sensor sees it, turn around
   if(sensors[6].ping_cm() <= threshold_back && sensors[6].ping_cm() > 0){
     checkEscape();
     //move.turn(180, 'R');
-    //RGB_color(0,0,0); //off
   }
   checkEscape();
 }
