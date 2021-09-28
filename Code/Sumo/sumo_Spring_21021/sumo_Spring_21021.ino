@@ -6,7 +6,7 @@
 /**
  * Globals
  */
-//FIXME:: should add initializing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
+//FIXME:: should add initializing move, Ir, and sonic sensor to their own class. This will help keep this code clean and organized.
 int flPin = 50;          
 int frPin = 51;
 int blPin = 52;
@@ -61,13 +61,13 @@ void setup()
 
   Serial.begin(115200);
 
-  // sets the robot to drive foward and go 60% power
+  // sets the robot to drive forward and go 60% power
   move.power(255); // 153 for 60%, 204 for 80%
   delay(5000);
   move.forward();
 }
   
-//FIXME:: should make the Sonic sensor, Ir sensor, and drive sequace their own functions to help keep code clean and organize.
+//FIXME:: should make the Sonic sensor, Ir sensor, and drive sequence their own functions to help keep code clean and organized.
 void loop() 
 {
   /**
