@@ -20,16 +20,16 @@ Surface surface(flPin, frPin, blPin, brPin);
 void printPins()
 {
   Serial.print("Back left pin reading: ");
-  Serial.println(digitalRead(blPin)); // these can be changed to use surface object?
+  Serial.println(surface.back_left());
  
   Serial.print("Back right pin reading: ");
-  Serial.println(digitalRead(brPin));
+  Serial.println(surface.back_right());
 
   Serial.print("Front right pin reading: ");
-  Serial.println(digitalRead(frPin));
+  Serial.println(surface.front_right());
 
   Serial.print("Front left pin reading: ");
-  Serial.println(digitalRead(flPin));
+  Serial.println(surface.front_left());
   //delay(1000); // use only for debugging. dont run with testing on field
 }
 
@@ -135,23 +135,23 @@ void checkEscape()
   bool escapeLeft = LOW;
   
   // if either of the front sensors see the line, robot must escape backwards
-  if(digitalRead(frPin) == 0){
+  if(surface.front_right() == 0){
     escapeLeft = HIGH;
     move.backward();
     delay(200); 
   }
-  else if(digitalRead(flPin) == 0){
+  else if(surface.front_left() == 0){
     escapeRight = HIGH;
     move.backward();
     delay(200); 
   }
   // if either of the back sensors see the line, robot must escape forwards
-  else if(digitalRead(brPin) == 0){
+  else if(surface.back_right() == 0){
     escapeLeft = HIGH;
     move.forward();
     delay(200); 
   }
-  else if(digitalRead(blPin) == 0){
+  else if(surface.back_left() == 0){
     escapeRight = HIGH;
     move.forward();
     delay(200); 
