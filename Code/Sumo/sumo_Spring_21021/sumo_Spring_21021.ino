@@ -131,49 +131,48 @@ void checkEscape()
   digitalWrite(frPin, HIGH);
   digitalWrite(flPin, HIGH);
 
-  bool escapeRight = LOW;
-  bool escapeLeft = LOW;
+  char escapeDir = '\0'; // null
   
   // if either of the front sensors see the line, robot must escape backwards
   if(surface.front_right() == 0){
-    escapeLeft = HIGH;
+    escapeDir = 'l';
     move.backward();
     delay(200); 
   }
   else if(surface.front_left() == 0){
-    escapeRight = HIGH;
+    escapeDir = 'r';
     move.backward();
     delay(200); 
   }
   // if either of the back sensors see the line, robot must escape forwards
   else if(surface.back_right() == 0){
-    escapeLeft = HIGH;
+    escapeDir = 'l';
     move.forward();
     delay(200); 
   }
   else if(surface.back_left() == 0){
-    escapeRight = HIGH;
+    escapeDir = 'r';
     move.forward();
     delay(200); 
   }
   // perform escape sequence if line is detected
-  if(escapeRight == HIGH || escapeLeft == HIGH){
-    escape(escapeRight, escapeLeft);
+  if(escapeDir != '\0'){
+    escape(escapeDir);
   }
   else{
     move.forward(); 
   }
 }
 
-void escape(bool escapeRight, bool escapeLeft)
+void escape(char dir)
 { 
   // number of seconds to turn
   int turn = random(2,4);
-  move.power(204);
-  if(escapeRight == HIGH){
+  move.power(204); // 80%
+  if(dir == 'r'){
     move.right();
   }
-  else if(escapeLeft == HIGH){
+  else if(dir == 'l'){
     move.left();
   }
   delay(turn * 350); // 350 = 1 sec?
