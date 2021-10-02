@@ -22,11 +22,26 @@ bool Surface::front_right()
 
 bool Surface::back_left()
 {
-	pinMode(blPin, INPUT); // does this need to be here?
 	return digitalRead(blPin);
 }
 
 bool Surface::back_right() 
 {
 	return digitalRead(brPin);
+}
+
+// This prints out what each IR sensor is reading
+void Surface::printPins()
+{
+  Serial.print("Back left pin reading: ");
+  Serial.println(back_left());
+ 
+  Serial.print("Back right pin reading: ");
+  Serial.println(back_right());
+
+  Serial.print("Front right pin reading: ");
+  Serial.println(front_right());
+
+  Serial.print("Front left pin reading: ");
+  Serial.println(front_left());
 }

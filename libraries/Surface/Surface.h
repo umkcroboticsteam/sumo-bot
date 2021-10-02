@@ -11,6 +11,7 @@ class Surface
 		bool front_right();
 		bool back_left();
 		bool back_right();
+		void printPins();
 
 	private:
 		int flPin;
