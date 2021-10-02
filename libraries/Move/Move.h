@@ -14,7 +14,7 @@ class Move
 		void left();
 		void right();
 		void halt();
-		void turn(int degree, char direction);
+		void turn(int degree);
 		int getPower();
 
 	private:
