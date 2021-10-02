@@ -6,7 +6,7 @@
 /**
  * Globals
  */
-//FIXME:: should add initializing move, Ir, and sonic sensor in there own class. This will help keep this code clean and organize.
+//FIXME:: should add initializing move, Ir, and sonic sensor to their own class. This will help keep this code clean and organized.
 int flPin = 50;          
 int frPin = 51;
 int blPin = 52;
@@ -20,16 +20,16 @@ Surface surface(flPin, frPin, blPin, brPin);
 void printPins()
 {
   Serial.print("Back left pin reading: ");
-  Serial.println(digitalRead(blPin)); // these can be changed to use surface object?
+  Serial.println(surface.back_left());
  
   Serial.print("Back right pin reading: ");
-  Serial.println(digitalRead(brPin));
+  Serial.println(surface.back_right());
 
   Serial.print("Front right pin reading: ");
-  Serial.println(digitalRead(frPin));
+  Serial.println(surface.front_right());
 
   Serial.print("Front left pin reading: ");
-  Serial.println(digitalRead(flPin));
+  Serial.println(surface.front_left());
   //delay(1000); // use only for debugging. dont run with testing on field
 }
 
@@ -61,13 +61,13 @@ void setup()
 
   Serial.begin(115200);
 
-  // sets the robot to drive foward and go 60% power
+  // sets the robot to drive forward and go 60% power
   move.power(255); // 153 for 60%, 204 for 80%
   delay(5000);
   move.forward();
 }
   
-//FIXME:: should make the Sonic sensor, Ir sensor, and drive sequace their own functions to help keep code clean and organize.
+//FIXME:: should make the Sonic sensor, Ir sensor, and drive sequence their own functions to help keep code clean and organized.
 void loop() 
 {
   /**
@@ -135,23 +135,23 @@ void checkEscape()
   bool escapeLeft = LOW;
   
   // if either of the front sensors see the line, robot must escape backwards
-  if(digitalRead(frPin) == 0){
+  if(surface.front_right() == 0){
     escapeLeft = HIGH;
     move.backward();
     delay(200); 
   }
-  else if(digitalRead(flPin) == 0){
+  else if(surface.front_left() == 0){
     escapeRight = HIGH;
     move.backward();
     delay(200); 
   }
   // if either of the back sensors see the line, robot must escape forwards
-  else if(digitalRead(brPin) == 0){
+  else if(surface.back_right() == 0){
     escapeLeft = HIGH;
     move.forward();
     delay(200); 
   }
-  else if(digitalRead(blPin) == 0){
+  else if(surface.back_left() == 0){
     escapeRight = HIGH;
     move.forward();
     delay(200); 
