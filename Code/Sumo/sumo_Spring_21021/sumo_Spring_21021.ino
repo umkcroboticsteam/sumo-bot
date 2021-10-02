@@ -16,23 +16,6 @@ Move move(11, 10, 12, 13); // pwm1, pwm2, dir1, dir2
 Sight sight;
 Surface surface(flPin, frPin, blPin, brPin);
 
-// This prints out what each IR sensor is reading
-void printPins()
-{
-  Serial.print("Back left pin reading: ");
-  Serial.println(surface.back_left());
- 
-  Serial.print("Back right pin reading: ");
-  Serial.println(surface.back_right());
-
-  Serial.print("Front right pin reading: ");
-  Serial.println(surface.front_right());
-
-  Serial.print("Front left pin reading: ");
-  Serial.println(surface.front_left());
-  //delay(1000); // use only for debugging. dont run with testing on field
-}
-
 NewPing sensors[7] = {
   NewPing( 2, 2, 200), //sensor 1 left 90 degree
   NewPing( 3, 3, 200), //sensor 2 left 45 degree
@@ -119,7 +102,7 @@ void loop()
   // if back sensor sees it, turn around
   if(sensors[6].ping_cm() <= threshold_back && sensors[6].ping_cm() > 0){
     checkEscape();
-    //move.turn(180, 'R');
+    //move.turn(180);
   }
   checkEscape();
 }
