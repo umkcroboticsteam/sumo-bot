@@ -120,23 +120,23 @@ void checkEscape()
   if(surface.front_right() == 0){
     escapeDir = 'l';
     move.backward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   else if(surface.front_left() == 0){
     escapeDir = 'r';
     move.backward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   // if either of the back sensors see the line, robot must escape forwards
   else if(surface.back_right() == 0){
     escapeDir = 'l';
     move.forward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   else if(surface.back_left() == 0){
     escapeDir = 'r';
     move.forward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   // perform escape sequence if line is detected
   if(escapeDir != '\0'){
