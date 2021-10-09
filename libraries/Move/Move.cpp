@@ -8,8 +8,6 @@ Move::Move(int pwm1, int pwm2, int dir1, int dir2)
 	this->pwm2 = pwm2; // Power to left motor
 	this->dir1 = dir1; // Direction of right motor (low is forward)
 	this->dir2 = dir2; // Direction of left motor (low is forward)
-	// bool true = HIGH
-	// bool false = LOW
 }
 
 Move* Move::power(int setPower)
@@ -68,96 +66,22 @@ void Move::halt()
 	digitalWrite(dir2, LOW);
 }
 
-void Move::turn(int degree, char direction){
+void Move::turn(int degree){
 	int orginalPower = getPower();
-	int timeDelay = 100; // how much it takes to turn 15 degree
+	int timeDelay = 100; // how much it takes to turn 15 degrees
 	power(255); 
 
-	switch(degree) {
-		case 15:
-			if(direction == 'R'){
-				right();
-				delay(timeDelay);
-			}
-			else {
-				left();
-				delay(timeDelay);
-			 }
-			break;
+	if (degree < 0){
+		left();
+		degree *= -1;
+	}
+	else{ 
+		right();
+	}
+	
+	delay((degree/15) * timeDelay); // degrees are given as multiples of 15
 
-		case 30: // All degrees will be divisible by 15. So to get a degree to turn it will multiple it by 15.
-			if(direction == 'R'){
-				right();
-				delay(2 * timeDelay);
-			}
-			else {
-				left();
-				delay(2 * timeDelay);
-			}
-			break;
-
-		case 45:
-			if(direction == 'R'){
-				right();
-				delay(3 * timeDelay);
-			}
-			else {
-				left();
-				delay(3 * timeDelay);
-			}
-			break;
-
-		case 60:
-			if(direction == 'R'){
-				right();
-				delay(4 * timeDelay);
-			}
-			else {
-				left();
-				delay(4 * timeDelay);
-			}
-			break;
-
-		case 90:
-			if(direction == 'R'){
-				right();
-				delay(6 * timeDelay);
-			}
-			else {
-				left();
-				delay(6 * timeDelay);
-			}
-			break;
-
-		case 135:
-			if(direction == 'R'){
-				right();
-				delay(9 * timeDelay);
-			}
-			else {
-				left();
-				delay(9 * timeDelay);
-			}
-			break;
-
-		case 180:
-			if(direction == 'R'){
-				right();
-				delay(12 * timeDelay);
-			}
-			else {
-				left();
-				delay(12 * timeDelay);
-			}
-			break;
-
-		default: // if error it will do 360 turn. For testing or bug finding.
-			left();
-			delay(24 * timeDelay);
-			break;
-  	}
 	power(orginalPower); // sets power to before it started to turn.
-
 }
 
 	

@@ -16,23 +16,6 @@ Move move(11, 10, 12, 13); // pwm1, pwm2, dir1, dir2
 Sight sight;
 Surface surface(flPin, frPin, blPin, brPin);
 
-// This prints out what each IR sensor is reading
-void printPins()
-{
-  Serial.print("Back left pin reading: ");
-  Serial.println(surface.back_left());
- 
-  Serial.print("Back right pin reading: ");
-  Serial.println(surface.back_right());
-
-  Serial.print("Front right pin reading: ");
-  Serial.println(surface.front_right());
-
-  Serial.print("Front left pin reading: ");
-  Serial.println(surface.front_left());
-  //delay(1000); // use only for debugging. dont run with testing on field
-}
-
 NewPing sensors[7] = {
   NewPing( 2, 2, 200), //sensor 1 left 90 degree
   NewPing( 3, 3, 200), //sensor 2 left 45 degree
@@ -119,7 +102,7 @@ void loop()
   // if back sensor sees it, turn around
   if(sensors[6].ping_cm() <= threshold_back && sensors[6].ping_cm() > 0){
     checkEscape();
-    //move.turn(180, 'R');
+    //move.turn(180);
   }
   checkEscape();
 }
@@ -131,49 +114,48 @@ void checkEscape()
   digitalWrite(frPin, HIGH);
   digitalWrite(flPin, HIGH);
 
-  bool escapeRight = LOW;
-  bool escapeLeft = LOW;
+  char escapeDir = '\0'; // null
   
   // if either of the front sensors see the line, robot must escape backwards
   if(surface.front_right() == 0){
-    escapeLeft = HIGH;
+    escapeDir = 'l';
     move.backward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   else if(surface.front_left() == 0){
-    escapeRight = HIGH;
+    escapeDir = 'r';
     move.backward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   // if either of the back sensors see the line, robot must escape forwards
   else if(surface.back_right() == 0){
-    escapeLeft = HIGH;
+    escapeDir = 'l';
     move.forward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   else if(surface.back_left() == 0){
-    escapeRight = HIGH;
+    escapeDir = 'r';
     move.forward();
-    delay(200); 
+    delay(delay_time * 2); 
   }
   // perform escape sequence if line is detected
-  if(escapeRight == HIGH || escapeLeft == HIGH){
-    escape(escapeRight, escapeLeft);
+  if(escapeDir != '\0'){
+    escape(escapeDir);
   }
   else{
     move.forward(); 
   }
 }
 
-void escape(bool escapeRight, bool escapeLeft)
+void escape(char dir)
 { 
   // number of seconds to turn
   int turn = random(2,4);
-  move.power(204);
-  if(escapeRight == HIGH){
+  move.power(204); // 80%
+  if(dir == 'r'){
     move.right();
   }
-  else if(escapeLeft == HIGH){
+  else if(dir == 'l'){
     move.left();
   }
   delay(turn * 350); // 350 = 1 sec?
