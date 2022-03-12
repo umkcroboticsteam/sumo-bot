@@ -1,2 +1,2 @@
 # UMKC-Robotics
-Robotics club for UMKC Robotics. The new one.
+Sumo bot code for UMKC Robotics 2021-2022.
