@@ -14,16 +14,17 @@ Move* Move::power(int setPower)
 {
 	powerValue = setPower;
 	return this;
-}
+}	
 
-int Move::getPower(){
+int Move::getPower()
+{
 	return powerValue;
 }
 
-void Move::set(int right, int left, bool dirR, bool dirL)
+void Move::set(int rightPower, int leftPower, bool dirR, bool dirL)
 {
-	analogWrite(pwm1, right);
-	analogWrite(pwm2, left);
+	analogWrite(pwm1, rightPower);
+	analogWrite(pwm2, leftPower);
 	digitalWrite(dir1, dirR);   
 	digitalWrite(dir2, dirL);
 }

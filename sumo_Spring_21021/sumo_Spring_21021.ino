@@ -28,7 +28,7 @@ NewPing sensors[7] = {
 
 int delay_time = 100;
 
-int threshold_min = 20; // [cm] threshold distance to stop motors for sensor 3 and 4 which looks straight ahead
+// int threshold_min = 20; // [cm] threshold distance to stop motors for sensor 3 and 4 which looks straight ahead
 int threshold_max = 75; // [cm] threshold distance to stop motors for sensor 3 and 4 which looks straight ahead
 int threshold_back = 15;
 
@@ -53,6 +53,7 @@ void setup()
 //FIXME:: should make the Sonic sensor, Ir sensor, and drive sequence their own functions to help keep code clean and organized.
 void loop() 
 {
+  move.power(255);
   /**
    * Sonic sensor sequence
    */
@@ -60,13 +61,13 @@ void loop()
   if(sensors[0].ping_cm() < threshold_max && sensors[0].ping_cm() > 0){
     checkEscape();
     move.left();
-    delay(delay_time);
+    delay(delay_time * 2);
   }
   // sensor num 6, 90 degree right sensor. Sensor looks for obstacles 90 deg. on right side
   else if(sensors[5].ping_cm() < threshold_max && sensors[5].ping_cm() > 0) {
     checkEscape();
     move.right();
-    delay(delay_time);
+    delay(delay_time * 2);
   }
   
   // sensor num 2, 45 degree left sensor. Sensor looks for obstacles 30 deg. on left side
@@ -120,23 +121,33 @@ void checkEscape()
   if(surface.front_right() == 0){
     escapeDir = 'l';
     move.backward();
-    delay(delay_time * 2); 
+    delay(delay_time * 3); 
   }
   else if(surface.front_left() == 0){
     escapeDir = 'r';
     move.backward();
-    delay(delay_time * 2); 
+    delay(delay_time * 3); 
   }
   // if either of the back sensors see the line, robot must escape forwards
   else if(surface.back_right() == 0){
+    /*/ safe
     escapeDir = 'l';
     move.forward();
-    delay(delay_time * 2); 
+    delay(delay_time * 3); 
+    /**/
+    // risky
+    move.set(255, 204, HIGH, LOW);
+    delay(delay_time * 4);
   }
   else if(surface.back_left() == 0){
+    /*/ safe
     escapeDir = 'r';
     move.forward();
-    delay(delay_time * 2); 
+    delay(delay_time * 3); 
+    /**/
+    // risky
+    move.set(204, 255, LOW, HIGH);
+    delay(delay_time * 4);
   }
   // perform escape sequence if line is detected
   if(escapeDir != '\0'){
@@ -151,7 +162,7 @@ void escape(char dir)
 { 
   // number of seconds to turn
   int turn = random(2,4);
-  move.power(204); // 80%
+  move.power(255); // 80%
   if(dir == 'r'){
     move.right();
   }
