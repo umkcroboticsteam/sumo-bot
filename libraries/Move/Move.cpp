@@ -68,7 +68,6 @@ void Move::halt()
 }
 
 void Move::turn(int degree){
-	int orginalPower = getPower();
 	int timeDelay = 100; // how much it takes to turn 15 degrees
 	power(255); 
 
@@ -80,9 +79,9 @@ void Move::turn(int degree){
 		right();
 	}
 	
-	delay((degree/15) * timeDelay); // degrees are given as multiples of 15
+	delay(int((degree/15.) * timeDelay)); // degrees are given as multiples of 15
 
-	power(orginalPower); // sets power to before it started to turn.
+	power(powerValue); // sets power to before it started to turn.
 }
 
 	

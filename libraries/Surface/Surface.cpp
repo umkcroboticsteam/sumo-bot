@@ -1,12 +1,16 @@
 #include "Arduino.h"
 #include "Surface.h"
 
-Surface::Surface(int flPin, int frPin, int blPin, int brPin)
+Surface::Surface(int fl, int fr, int bl, int br)
 {
-	this->flPin = flPin;
-	this->frPin = frPin;
-	this->blPin = blPin;
-	this->brPin = brPin;
+	flPin = fl;
+	frPin = fr;
+	blPin = bl;
+	brPin = br;
+	pinMode(blPin, INPUT);
+	pinMode(brPin, INPUT);
+	pinMode(frPin, INPUT);
+	pinMode(flPin, INPUT);
 }
 
 // Read IR value
