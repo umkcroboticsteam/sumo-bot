@@ -1,2 +1,2 @@
 # UMKC-Robotics
-Sumo bot code for UMKC Robotics 2021-2022.
+Sumo bot code for UMKC Robotics 2022-2023.
